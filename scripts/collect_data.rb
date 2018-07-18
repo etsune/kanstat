@@ -27,11 +27,12 @@ genres.each do |gid, _|
             #ranobe_url = "http://ncode.syosetu.com/n3244bb/"
             ranobe_page = Net::HTTP.get(URI.parse(ranobe_url)).force_encoding('UTF-8')
             chapter_text = ranobe_page.scan(chapter_rx)
-            chapter_text = clean_page(chapter_text) unless chapter_text.nil?
-            if chapter_text.length > 10
-                File.write(data_dir+"/#{gid}_#{rid}_1.txt", chapter_text)
+
+            if chapter_text.to_s.length > 10
+                File.write(data_dir+"/#{gid}_#{rid}_1.txt", clean_page(chapter_text))
                 next
             end
+
             ranobe_page.scan(chapter_urls_rx) do |ch_url, cn|
                 puts("Ch " + cn)
                 chapter_url = "http://ncode.syosetu.com" + ch_url
