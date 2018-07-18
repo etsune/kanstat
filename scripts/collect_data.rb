@@ -17,11 +17,22 @@ def clean_page (text)
     text[0][0].gsub(chapter_tags_rx,"").gsub(br_rx,"")
 end
 
+def is_id_saved (id)
+    Dir[data_dir+"/*"].each do |file|
+        return true if file.include?(id)
+    end
+    return false
+end
+
 genres.each do |gid, _|
     (1..100).each do |page|
         search_url = "http://yomou.syosetu.com/search.php?&order=notorder&notnizi=1&genre=#{gid}&p=#{page}"
         search_page = Net::HTTP.get(URI.parse(search_url)).force_encoding('UTF-8')
         search_page.scan(search_rx).each do |rid, name|
+            if is_id_saved(rid)
+                puts "Skip #{rid}"
+                next
+            end
             ranobe_url = "http://ncode.syosetu.com/#{rid}/"
             puts("Reading " + rid)
             #ranobe_url = "http://ncode.syosetu.com/n3244bb/"
