@@ -38,11 +38,9 @@ genres.each do |gid, _|
                 chapter_url = "http://ncode.syosetu.com" + ch_url
                 chapter_page = Net::HTTP.get(URI.parse(chapter_url)).force_encoding('UTF-8')
                 chapter_text = chapter_page.scan(chapter_rx)
-                next if chapter_text.nil?
-                chapter_text = clean_page(chapter_text)
-                if chapter_text.length > 10
-                    #p data_dir+"/#{gid}_#{rid}_#{cn}.txt"
-                    File.write(data_dir+"/#{gid}_#{rid}_#{cn}.txt", chapter_text)
+
+                if chapter_text.to_s.length > 10
+                    File.write(data_dir+"/#{gid}_#{rid}_#{cn}.txt", clean_page(chapter_text))
                 end
             end
         end
