@@ -26,6 +26,7 @@ end
 
 genres.each do |gid, _|
     (1..100).each do |page|
+        sleep(1)
         search_url = "http://yomou.syosetu.com/search.php?&order=notorder&notnizi=1&genre=#{gid}&p=#{page}"
         search_page = Net::HTTP.get(URI.parse(search_url)).force_encoding('UTF-8')
         search_page.scan(search_rx).each do |rid, name|
@@ -45,7 +46,7 @@ genres.each do |gid, _|
             end
 
             ranobe_page.scan(chapter_urls_rx) do |ch_url, cn|
-                sleep(2)
+                sleep(1)
                 puts("Ch " + cn)
                 chapter_url = "http://ncode.syosetu.com" + ch_url
                 chapter_page = Net::HTTP.get(URI.parse(chapter_url)).force_encoding('UTF-8')
