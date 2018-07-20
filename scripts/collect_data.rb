@@ -49,17 +49,13 @@ loop do
             search_url = "http://yomou.syosetu.com/search.php?&order=notorder&notnizi=1&genre=#{gid}&p=#{page}"
             search_page = Net::HTTP.get(URI.parse(search_url)).force_encoding('UTF-8')
             search_page.scan(search_rx).each do |rid, name|
-                
-                #debug
-                getted += 1
-                puts()
-
                 if is_id_saved(rid, data_dir)
                     puts "Skip #{rid}"
                     next
                 end
-                #getted += 1
+                getted += 1
                 ranobe_url = "http://ncode.syosetu.com/#{rid}/"
+                puts()
                 puts("Reading " + rid)
                 #ranobe_url = "http://ncode.syosetu.com/n3244bb/"
                 ranobe_page = Net::HTTP.get(URI.parse(ranobe_url)).force_encoding('UTF-8')
@@ -68,6 +64,7 @@ loop do
                 #сохраняем ранобе из 1 главы или идём дальше, если глав больше
                 if chapter_text.to_s.length > 10
                     File.write(data_dir+"/#{gid}_#{rid}_1.txt", clean_page(chapter_text))
+                    print("1")
                     next
                 end
 
@@ -82,6 +79,7 @@ loop do
                         File.write(data_dir+"/#{gid}_#{rid}_#{cn}.txt", clean_page(chapter_text))
                     end
                 end
+                puts()
             end
         end
     end
