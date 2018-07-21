@@ -46,11 +46,12 @@ def is_id_saved (id)
     return false
 end
 
-# Составить список скачанных глав
+# Составить список ID скачанных глав
 def generate_data_list ()
     open($data_list_file, 'a') do |f|
-        Dir[$data_dir+"/*"].each do |file|
-            f.puts file.match(/(?<f>[\w]+?)\.txt\z/i)["f"]
+        id_list = Dir[$data_dir+"/*"].map {|i| i.match(/_(?<f>[\w]+?)_\d+?\.txt\z/i)["f"]}
+        id_list.uniq.each do |id|
+            f.puts id
         end
     end
 end
@@ -100,6 +101,8 @@ loop do
                     next
                 end
 
+                # ch_url - адрес главы
+                # cn - номер главы
                 ranobe_page.scan(chapter_urls_rx) do |ch_url, cn|
                     sleep(1)
                     print(cn+"-")
@@ -111,6 +114,7 @@ loop do
                         saved_file_name = "#{gid}_#{rid}_#{cn}"
                         File.write($data_dir+"/#{saved_file_name}.txt", clean_page(chapter_text))
 
+                        next if cn > 1
                         open($data_list_file, 'a') do |f|
                             f.puts saved_file_name
                         end
