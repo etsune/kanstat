@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,11 +52,27 @@ namespace charcount
             }
 
             result_reformat();
-            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
 
+            JObject o = JObject.FromObject(result);
+            foreach (var glypf in result)
+            {
+                foreach(var st in glypf.Value)
+                {
+                    if (!total_count.ContainsKey(st.Key)) continue;
+                    float freq = ((float)st.Value / (float)total_count[st.Key]) * (float)100;
+                    string freq_str = String.Format("{0}", freq.ToString("0.00000"));
+                    if (freq < 0.00001) freq_str = "< " + (0.00001).ToString("0.00000");
+                    o[glypf.Key]["f" + st.Key] = freq_str;
+                }
+            }
+
+            string json = JsonConvert.SerializeObject(o, Formatting.Indented);
             string result_file = result_dir + @"\stats.json";
+            string result_file_min = result_dir + @"\stats.min.json";
             if (File.Exists(result_file)) File.Delete(result_file);
+            if (File.Exists(result_file_min)) File.Delete(result_file_min);
             File.WriteAllText(result_file, json);
+            File.WriteAllText(result_file_min, JsonConvert.SerializeObject(o, Formatting.None));
         }
 
         static void result_reformat()
