@@ -2,7 +2,7 @@ require 'json'
 require 'net/http'
 require 'uri'
 
-kanji_rx = /[一-龯]/
+kanji_rx = /[一-龯]/ # c >= '\u{4E00}' && c <= '\u{9FD5}'
 chapter_rx = /<div id="novel_honbun" class="novel_view">(?<cont>[\s\S]+?)<\/div>/
 search_old_rx = /(?<url>https?:\/\/ncode\.syosetu\.com\/(?<rid>[\w]+)\/)"/
 search_rx = /href="https:\/\/ncode\.syosetu\.com\/(?<rid>.+?)\/">(?<name>.+?)<\/a>[\s\S]+?<table>/
