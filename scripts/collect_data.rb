@@ -111,7 +111,7 @@ loop do
                         saved_file_name = "#{gid}_#{rid}_#{cn}"
                         File.write($data_dir+"/#{saved_file_name}.txt", clean_page(chapter_text))
 
-                        next if cn > 1
+                        next if Integer(cn) > 1
                         open($data_list_file, 'a') do |f|
                             f.puts saved_file_name
                         end
