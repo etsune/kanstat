@@ -94,7 +94,7 @@ loop do
                 # Сохраняем ранобе из 1 главы или идём дальше, если глав больше
                 if chapter_text.to_s.length > 10
                     File.write($data_dir+"/#{gid}_#{rid}_1.txt", clean_page(chapter_text))
-                    print("1")
+                    puts("1")
                     next
                 end
 
