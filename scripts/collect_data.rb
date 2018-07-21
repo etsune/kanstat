@@ -27,9 +27,6 @@ end
 
 # Проверяем, сохраняли ли это ранобэ ранее
 def is_id_saved (id)
-    Dir[$data_dir+"/*"].each do |file|
-        return true if file.include?(id)
-    end
     begin
         file = File.new($data_list_file, "r")
         while (line = file.gets)
