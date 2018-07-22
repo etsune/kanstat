@@ -30,17 +30,14 @@
                             <a class="item" v-for="(genre, gid) in genres_data" :class="is_active(gid)" @click="go_to(gid)">{{ genre.ru }}</a>
                         </div>
                     </div>
-                    <kantable :activestat="active_stat" :aeobj="aobj" />
+                    <kantable :activestat="active_stat" :aeobj="aobj" :rows="total_rows" />
                 </div>
             </div>
         </div>
     </div>
     <template id="kantable">
         <div class="twelve wide stretched column">
-            <table class="ui celled striped table" v-if="aeobj.length > 0">
-                <!-- <thead>
-                    <tr><th colspan="3"></th></tr>
-                </thead> -->
+            <table class="ui celled striped table" v-if="showob.length > 0">
                 <thead>
                     <tr>
                         <th>Ранг</th>
@@ -51,7 +48,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(kdata, rank) in aeobj">
+
+                    <tr v-for="(kdata, rank) in showob">
                         <th>{{ rank + 1 }}</th>
                         <th class="glr">{{ kdata.glyph }}</th>
                         <th>{{ kdata.used }}</th>
@@ -61,13 +59,25 @@
                             <a :href="jisho_link(kdata.glyph)">Jisho</a>
                         </th>
                     </tr>
+                    <tr v-if="busy">
+                        <th>...</th>
+                        <th>...</th>
+                        <th class="load-table">Загрузка...</th>
+                        <th>...</th>
+                        <th>...</th>
+                    </tr>
                 </tbody>
             </table>
             <p v-else>К сожалению, для выбранной категории статистики пока что нет =(</p>
+            <!-- <div v-if="showob.length > 0"> -->
+                <div v-infinite-scroll="getmore" infinite-scroll-disabled="busy" infinite-scroll-distance="10"></div>
+            <!-- </div> -->
+
         </div>
     </template>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+    <script src="https://unpkg.com/vue-infinite-scroll@2.0.2/vue-infinite-scroll.js"></script>
     <script src="frontend/js/main.js"></script>
 </body>
 
