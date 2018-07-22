@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="frontend/css/style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
 </head>
@@ -18,22 +19,25 @@
     </noscript>
     <div class="ui container">
         <div id="app">
-            <div class="ui grid">
-                <div class="four wide column">
-                    <div class="ui secondary vertical pointing menu">
-                        <a class="item" :class="is_active(0)" @click="go_to(0)">Суммарная статистика</a>
-                        <a class="item" v-for="(genre, gid) in genres_data" :class="is_active(gid)" @click="go_to(gid)">{{ genre.ru }}</a>
-                    </div>
+            <div class="ui segment">
+                <div class="ui active inverted dimmer" v-if="loader">
+                    <div class="ui text loader">Загрузка</div>
                 </div>
-                <kantable :activestat="active_stat" :aeobj="aobj" />
+                <div class="ui grid">
+                    <div class="four wide column">
+                        <div class="ui secondary vertical pointing menu">
+                            <a class="item" :class="is_active(0)" @click="go_to(0)">Суммарная статистика</a>
+                            <a class="item" v-for="(genre, gid) in genres_data" :class="is_active(gid)" @click="go_to(gid)">{{ genre.ru }}</a>
+                        </div>
+                    </div>
+                    <kantable :activestat="active_stat" :aeobj="aobj" />
+                </div>
             </div>
         </div>
     </div>
     <template id="kantable">
         <div class="twelve wide stretched column">
-            {{aeobj}}
-            {{activestat}}
-            <table class="ui celled striped table">
+            <table class="ui celled striped table" v-if="aeobj.length > 0">
                 <!-- <thead>
                     <tr><th colspan="3"></th></tr>
                 </thead> -->
@@ -43,17 +47,23 @@
                         <th>Иероглиф</th>
                         <th>Употреблений</th>
                         <th>Частотность, %</th>
+                        <th>Словари</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(kdata, rank) in aeobj">
-                        <th>{{ rank }}</th>
-                        <th>{{ kdata.glyph }}</th>
+                        <th>{{ rank + 1 }}</th>
+                        <th class="glr">{{ kdata.glyph }}</th>
                         <th>{{ kdata.used }}</th>
                         <th>{{ kdata.freq }}</th>
+                        <th>
+                            <a :href="byars_link(kdata.glyph)">БЯРС</a>;
+                            <a :href="jisho_link(kdata.glyph)">Jisho</a>
+                        </th>
                     </tr>
                 </tbody>
             </table>
+            <p v-else>К сожалению, для выбранной категории статистики пока что нет =(</p>
         </div>
     </template>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
