@@ -9,6 +9,7 @@ var vm = new Vue({
         active_stat: 0,
         aobj: [],
         loader: true,
+        total_rows: 100,
     },
     methods: {
         loading: function () {
@@ -35,18 +36,12 @@ var vm = new Vue({
             aobj = [];
             for (var property in this.kanstat_data) {
                 if (this.kanstat_data.hasOwnProperty(property)) {
-                    if (!this.kanstat_data[property][gid]) {
-                        // vm.$set(this.aobj, 0, {
-                        //     glyph: "",
-                        //     freq: "",
-                        //     used: "",
-                        // });
-                    } else {
+                    if (this.kanstat_data[property][gid]) {
                         aobj[this.kanstat_data[property]["n" + gid] - 1] = {
                             glyph: property,
                             freq: this.kanstat_data[property]["f" + gid],
                             used: this.kanstat_data[property][gid],
-                        };
+                        }
                     }
                 }
             }
@@ -71,8 +66,55 @@ var vm = new Vue({
         },
         kantable: {
             template: '#kantable',
-            props: ['activestat', 'aeobj'],
+            props: ['activestat', 'aeobj', 'rows'],
+            data: function () {
+                return {
+                    busy: false,
+                    defel: 100,
+                }
+            },
+            watch: {
+                activestat: function (newd, oldd) {
+                    this.defel = this.rows
+                }
+            },
+            computed: {
+                showob: function () {
+                    if (this.aeobj.length > 0) {
+                        var new_obj = [];
+                        for (var i = 0, j = this.defel; i < j; i++) {
+                            new_obj[i] = this.aeobj[i];
+                        }
+                        return new_obj;
+                    } else {
+                        return []
+                    }
+                }
+            },
             methods: {
+                getmore: function () {
+                    if (this.aeobj.length > 0) {
+                        this.busy = true;
+                        setTimeout(() => {
+                            // var new_obj = this.showob;
+                            // for (var i = this.defel, j = this.defel + 100; i < j; i++) {
+                            //     new_obj[i] = this.aeobj[i];
+                            // }
+                            this.defel += 100
+                            // this.showob = new_obj;
+                            this.busy = false;
+                        }, 200);
+                    }
+                },
+                initfn: function () {
+                    if (this.aeobj.length > 0) {
+                        var new_obj = this.showob;
+                        for (var i = 0, j = 100; i < j; i++) {
+                            new_obj[i] = this.aeobj[i];
+                        }
+                        this.showob = new_obj;
+                    }
+                },
                 byars_link: function (kanji) {
                     return "http://e-lib.ua/dic/results?w=" + kanji + "&m=0";
                 },
