@@ -32,7 +32,7 @@ var vm = new Vue({
         },
         active_obj_create: function (gid) {
             this.loader = true;
-            this.aobj = [];
+            aobj = [];
             for (var property in this.kanstat_data) {
                 if (this.kanstat_data.hasOwnProperty(property)) {
                     if (!this.kanstat_data[property][gid]) {
@@ -42,7 +42,7 @@ var vm = new Vue({
                         //     used: "",
                         // });
                     } else {
-                        vm.$set(this.aobj, this.kanstat_data[property]["n" + gid] - 1, {
+                        vm.$set(aobj, this.kanstat_data[property]["n" + gid] - 1, {
                             glyph: property,
                             freq: this.kanstat_data[property]["f" + gid],
                             used: this.kanstat_data[property][gid],
@@ -50,6 +50,7 @@ var vm = new Vue({
                     }
                 }
             }
+            this.aobj = aobj;
             this.loader = false;
         }
     },
