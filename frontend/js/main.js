@@ -26,23 +26,19 @@ var vm = new Vue({
         },
         go_to: function (gid) {
             this.active_stat = gid
-            //this.active_obj_create(gid);
+            this.active_obj_create(gid);
         },
         active_obj_create: function (gid) {
             for (var property in this.kanstat_data) {
                 if (this.kanstat_data.hasOwnProperty(property)) {
-                    var j = this.kanstat_data[property];
-                    var used = j[gid];
-                    var glyph = property;
-                    var rank = j["n"+gid];
-                    var freq = j["f"+gid];
-                    this.aobj[rank] = { 
-                        glyph: glyph,
-                        freq: freq,
-                        used: used,
-                    };
+                    vm.$set(this.aobj, this.kanstat_data[property]["n"+gid], { 
+                        glyph: property,
+                        freq: this.kanstat_data[property]["f"+gid],
+                        used: this.kanstat_data[property][gid],
+                    });
                 }
             }
+            console.log(this.aobj);
         }
         
     },

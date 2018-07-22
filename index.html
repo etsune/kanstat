@@ -25,7 +25,6 @@
                         <a class="item" v-for="(genre, gid) in genres_data" :class="is_active(gid)" @click="go_to(gid)">{{ genre.ru }}</a>
                     </div>
                 </div>
-                {{aobj}}
                 <kantable :activestat="active_stat" :aeobj="aobj" />
             </div>
         </div>
