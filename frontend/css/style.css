@@ -1,0 +1,39 @@
+@font-face {
+    font-family: "Source Han Serif JP";
+    src: url("https://jdh8.github.io/source-han-serif/SourceHanSerifJP-Regular.otf");
+}
+
+.container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.segment, .aheader, table {
+    font-family: 'Roboto Condensed', sans-serif !important;
+    font-size: 15px !important;
+}
+
+.ui.menu {
+    font-family: 'Roboto Condensed', sans-serif !important;
+    font-size: 1.2em !important;
+}
+
+.glr {
+    font-family: 'Source Han Serif JP', serif !important;
+    font-size: 1.6em !important;
+}
+
+th {
+    font-weight: 300;
+    padding: 10px;
+}
+
+thead {
+    font-weight: bold !important;
+    font-size: 1em !important;
+}
+
+table {
+    font-size: 1.4em !important;
+    text-align: center !important;
+}
