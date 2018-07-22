@@ -42,11 +42,11 @@ var vm = new Vue({
                         //     used: "",
                         // });
                     } else {
-                        vm.$set(aobj, this.kanstat_data[property]["n" + gid] - 1, {
+                        aobj[this.kanstat_data[property]["n" + gid] - 1] = {
                             glyph: property,
                             freq: this.kanstat_data[property]["f" + gid],
                             used: this.kanstat_data[property][gid],
-                        });
+                        };
                     }
                 }
             }
