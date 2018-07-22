@@ -12,12 +12,12 @@ var vm = new Vue({
     },
     methods: {
         loading: function () {
+            this.loader = true;
             this.$http.get(this.kanstat_data_url).then(function (response) {
                 this.$http.get(this.genres_data_url).then(function (response2) {
                     this.kanstat_data = response.data;
                     this.genres_data = response2.data;
                     this.active_obj_create(this.active_stat);
-                    this.loader = false;
                 }, function (error2) {
                 });
             }, function (error) {
