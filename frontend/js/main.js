@@ -9,7 +9,6 @@ var vm = new Vue({
         active_stat: 0,
         aobj: [],
         loader: true,
-        total_rows: 100,
     },
     methods: {
         loading: function () {
@@ -66,55 +65,38 @@ var vm = new Vue({
         },
         kantable: {
             template: '#kantable',
-            props: ['activestat', 'aeobj', 'rows'],
+            props: ['activestat', 'aeobj'],
             data: function () {
                 return {
                     busy: false,
-                    defel: 100,
+                    defel: 1,
                 }
             },
             watch: {
                 activestat: function (newd, oldd) {
-                    this.defel = this.rows
+                    this.defel = 1
                 }
             },
             computed: {
                 showob: function () {
                     if (this.aeobj.length > 0) {
                         var new_obj = [];
-                        for (var i = 0, j = this.defel; i < j; i++) {
+                        for (var j = this.defel * 100, i = j - 100; i < j; i++) {
+                            if (this.aeobj[i] == null){
+                                return new_obj;
+                            }
                             new_obj[i] = this.aeobj[i];
                         }
                         return new_obj;
                     } else {
                         return []
                     }
+                },
+                pagescount: function () {
+                    return Math.ceil(this.aeobj.length / 100);
                 }
             },
             methods: {
-                getmore: function () {
-                    if (this.aeobj.length > 0) {
-                        this.busy = true;
-                        setTimeout(() => {
-                            // var new_obj = this.showob;
-                            // for (var i = this.defel, j = this.defel + 100; i < j; i++) {
-                            //     new_obj[i] = this.aeobj[i];
-                            // }
-                            this.defel += 100
-                            // this.showob = new_obj;
-                            this.busy = false;
-                        }, 200);
-                    }
-                },
-                initfn: function () {
-                    if (this.aeobj.length > 0) {
-                        var new_obj = this.showob;
-                        for (var i = 0, j = 100; i < j; i++) {
-                            new_obj[i] = this.aeobj[i];
-                        }
-                        this.showob = new_obj;
-                    }
-                },
                 byars_link: function (kanji) {
                     return "http://e-lib.ua/dic/results?w=" + kanji + "&m=0";
                 },
@@ -123,6 +105,44 @@ var vm = new Vue({
                 },
                 checkdata: function () {
                     return this.aeobj.length > 0;
+                },
+                change_page: function (page) {
+                    this.defel = page
+                }
+            },
+            components: {
+                pages: {
+                    template: '#pagination',
+                    props: ['pagestotal', 'current'],
+                    methods: {
+                        pagestyle: function (p) {
+                            return {active: p == this.current};
+                        },
+                        hasItem: function (item) {
+                            return this.pages.indexOf(item) !== -1
+                        }
+                    },
+                    computed: {
+                        range: function () {
+                            return 4;
+                        },
+                        rStart: function () {
+                            var s = this.current - this.range
+                            return (s > 1) ? s : 1
+                        },
+                        rEnd: function () {
+                            var pt = this.pagestotal
+                            var e = this.current + this.range
+                            return (e < pt) ? e : pt
+                        },
+                        pages: function () {
+                            var pages = []
+                            for (i = this.rStart; i <= this.rEnd; i++) {
+                                pages.push(i)
+                            }
+                            return pages
+                        }
+                    }
                 }
             }
         }
