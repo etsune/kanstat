@@ -53,6 +53,16 @@ def generate_data_list ()
     end
 end
 
+def req (url)
+    loop do
+        begin
+            return Net::HTTP.get(URI.parse(url)).force_encoding('UTF-8')
+        rescue
+            sleep(10)
+        end
+    end
+end
+
 # Начало программы
 Dir.mkdir($data_dir) unless Dir.exist?($data_dir)
 Dir.mkdir($tmp_dir) unless Dir.exist?($tmp_dir)
@@ -77,7 +87,7 @@ loop do
             break if getted > 10
             sleep(1)
             search_url = "http://yomou.syosetu.com/search.php?&order=notorder&notnizi=1&genre=#{gid}&p=#{page}"
-            search_page = Net::HTTP.get(URI.parse(search_url)).force_encoding('UTF-8')
+            search_page = req(search_url)
             search_page.scan(search_rx).each do |rid, name|
                 if is_id_saved(rid)
                     puts "Skip #{rid}"
@@ -88,7 +98,7 @@ loop do
                 puts()
                 puts("Reading " + rid)
                 #ranobe_url = "http://ncode.syosetu.com/n3244bb/"
-                ranobe_page = Net::HTTP.get(URI.parse(ranobe_url)).force_encoding('UTF-8')
+                ranobe_page = req(ranobe_url)
                 chapter_text = ranobe_page.scan(chapter_rx)
 
                 # Сохраняем ранобе из 1 главы или идём дальше, если глав больше
@@ -104,7 +114,7 @@ loop do
                     sleep(1)
                     print(cn+"-")
                     chapter_url = "http://ncode.syosetu.com" + ch_url
-                    chapter_page = Net::HTTP.get(URI.parse(chapter_url)).force_encoding('UTF-8')
+                    chapter_page = req(chapter_url)
                     chapter_text = chapter_page.scan(chapter_rx)
 
                     if chapter_text.to_s.length > 10

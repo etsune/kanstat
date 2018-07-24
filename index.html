@@ -24,20 +24,22 @@
                     <div class="ui text loader">Загрузка</div>
                 </div>
                 <div class="ui grid">
-                    <div class="four wide column">
-                        <div class="ui secondary vertical pointing menu">
-                            <a class="item" :class="is_active(0)" @click="go_to(0)">Суммарная статистика</a>
-                            <a class="item" v-for="(genre, gid) in genres_data" :class="is_active(gid)" @click="go_to(gid)">{{ genre.ru }}</a>
+                    <div class="row">
+                        <div class="five wide column">
+                            <div class="ui secondary vertical pointing menu">
+                                <a class="item" :class="is_active(0)" @click="go_to(0)">Суммарная статистика</a>
+                                <a class="item" v-for="(genre, gid) in genres_data" :class="is_active(gid)" @click="go_to(gid)">{{ genre.ru }}</a>
+                            </div>
                         </div>
+                        <kantable :activestat="active_stat" :aeobj="aobj" />
                     </div>
-                    <kantable :activestat="active_stat" :aeobj="aobj" />
                 </div>
             </div>
         </div>
     </div>
     <template id="kantable">
-        <div class="twelve wide stretched column">
-            <pages :pagestotal="pagescount" :current="defel" @changepage="change_page($event)"></pages>
+        <div class="eleven wide column">
+            <pages :pagestotal="pagescount" :current="defel" @changepage="change_page($event)" v-if="pagescount > 0"></pages>
             <table class="ui celled striped table" v-if="showob.length > 0">
                 <thead>
                     <tr>
