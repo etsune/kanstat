@@ -58,6 +58,7 @@ def req (url)
         begin
             return Net::HTTP.get(URI.parse(url)).force_encoding('UTF-8')
         rescue
+            puts("HTTP error, retrying...")
             sleep(10)
         end
     end
