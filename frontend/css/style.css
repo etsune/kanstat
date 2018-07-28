@@ -8,13 +8,15 @@
     padding-bottom: 10px;
 }
 
-.segment, .aheader, table {
+h5, h3, h4, .segment, .aheader, table, .ui.menu {
     font-family: 'Roboto Condensed', sans-serif !important;
+}
+
+.segment, .aheader, table {
     font-size: 15px !important;
 }
 
 .ui.menu {
-    font-family: 'Roboto Condensed', sans-serif !important;
     font-size: 1.2em !important;
 }
 
@@ -22,6 +24,19 @@
     font-family: 'Source Han Serif JP', serif !important;
     font-size: 1.6em !important;
     cursor: pointer;
+}
+
+.exline {
+    font-family: 'Source Han Serif JP', serif;
+    font-size: 1.4em;
+    line-height: normal;
+    margin: 5px;
+}
+
+.selected_kan {
+    /* color: rgb(39, 118, 163); */
+    color: #4183c4;
+    /* text-decoration: underline; */
 }
 
 input {

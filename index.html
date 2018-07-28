@@ -71,6 +71,18 @@
                                 </tbody>
                             </table>
                         </div>
+                        <h3 class="ui attached center aligned header">
+                            Примеры употребления
+                        </h3>
+                        <div class="ui attached segment">
+                            <div class="ui relaxed divided list">
+                                <div class="item" v-for="(line, cid) in ex">
+                                    <div class="content">
+                                        <div class="description exline" v-html="select_kanji(line,searchi)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="ui segment bottom attached warning message" v-else>
                         <i class="warning icon"></i>

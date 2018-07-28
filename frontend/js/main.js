@@ -2,14 +2,16 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        kanstat_data_url: "https://raw.githubusercontent.com/etsune/kanstat/master/result/stats.min.json",
-        genres_data_url: "https://raw.githubusercontent.com/etsune/kanstat/master/result/genres.json",
+        kanstat_data_url: "https://raw.githubusercontent.com/etsune/kanstat/gh-pages/result/stats.min.json",
+        genres_data_url: "https://raw.githubusercontent.com/etsune/kanstat/gh-pages/result/genres.json",
+        examples_url: "https://raw.githubusercontent.com/etsune/kanstat/gh-pages/result/examples/",
         genres_data: {},
         kanstat_data: {},
         active_stat: 0,
         aobj: [],
         loader: true,
         searchi: "",
+        ex: {},
     },
     methods: {
         loading: function () {
@@ -47,6 +49,23 @@ var vm = new Vue({
             }
             this.aobj = aobj;
             this.loader = false;
+        },
+        select_kanji: function (line, kanji) {
+            return line.replace(kanji, '<span class="selected_kan">' +kanji+ "</span>");
+        }
+    },
+    watch: {
+        searchi: function (newd, oldd) {
+            if (this.searchi.length == 1) {
+                this.loader = true;
+                this.$http.get(this.examples_url + this.searchi + ".json").then(function (response) {
+                    this.loader = false;
+                    this.ex = response.data;
+                }, function (error) {
+                });
+            } else {
+                this.ex = {}
+            }
         }
     },
     created: function () {
@@ -83,7 +102,7 @@ var vm = new Vue({
                     if (this.aeobj.length > 0) {
                         var new_obj = [];
                         for (var j = this.defel * 100, i = j - 100; i < j; i++) {
-                            if (this.aeobj[i] == null){
+                            if (this.aeobj[i] == null) {
                                 return new_obj;
                             }
                             new_obj[i] = this.aeobj[i];
@@ -117,7 +136,7 @@ var vm = new Vue({
                     props: ['pagestotal', 'current'],
                     methods: {
                         pagestyle: function (p) {
-                            return {active: p == this.current};
+                            return { active: p == this.current };
                         },
                         hasItem: function (item) {
                             return this.pages.indexOf(item) !== -1
