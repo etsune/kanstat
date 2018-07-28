@@ -38,7 +38,7 @@
                                     <a class="item" v-for="(genre, gid) in genres_data" :class="is_active(gid)" @click="go_to(gid)">{{ genre.ru }}</a>
                                 </div>
                             </div>
-                            <kantable :activestat="active_stat" :aeobj="aobj" />
+                            <kantable :activestat="active_stat" :aeobj="aobj" @searchit="searchi = $event" />
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                 <tbody>
                     <tr v-for="(kdata, rank) in showob" v-if="kdata != null">
                         <th>{{ rank + 1 }}</th>
-                        <th class="glr">{{ kdata.glyph }}</th>
+                        <th class="glr" @click="$emit('searchit', kdata.glyph)">{{ kdata.glyph }}</th>
                         <th>{{ kdata.used }}</th>
                         <th>{{ kdata.freq }}</th>
                         <th>

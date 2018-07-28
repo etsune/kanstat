@@ -21,6 +21,7 @@
 .glr {
     font-family: 'Source Han Serif JP', serif !important;
     font-size: 1.6em !important;
+    cursor: pointer;
 }
 
 input {
