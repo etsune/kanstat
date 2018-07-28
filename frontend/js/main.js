@@ -51,7 +51,7 @@ var vm = new Vue({
             this.loader = false;
         },
         select_kanji: function (line, kanji) {
-            return line.replace(kanji, '<span class="selected_kan">' +kanji+ "</span>");
+            return line.replace(new RegExp(kanji, 'g'), '<span class="selected_kan">' +kanji+ "</span>");
         }
     },
     watch: {
