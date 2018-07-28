@@ -143,7 +143,7 @@ namespace charcount
 
         static void progress_log(int current, int all)
         {
-            int percent = current / all;
+            int percent = (current * 100) / all;
             if (progress != percent)
             {
                 progress = percent;
