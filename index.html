@@ -26,7 +26,7 @@
                 <div class="ui segment">
                     <div class="ui icon input">
                         <input type="text" placeholder="Поиск..." v-model="searchi">
-                        <i class="search icon"></i>
+                        <i class="circular times link icon" @click="searchi = ''"></i>
                     </div>
                 </div>
                 <div class="ui top attached segment" v-if="searchi.length == 0">
