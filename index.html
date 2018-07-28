@@ -19,19 +19,62 @@
     </noscript>
     <div class="ui container">
         <div id="app">
-            <div class="ui segment">
+            <div class="ui segments">
                 <div class="ui active inverted dimmer" v-if="loader">
                     <div class="ui text loader">Загрузка</div>
                 </div>
-                <div class="ui grid">
-                    <div class="row">
-                        <div class="five wide column">
-                            <div class="ui secondary vertical pointing menu">
-                                <a class="item" :class="is_active(0)" @click="go_to(0)">Суммарная статистика</a>
-                                <a class="item" v-for="(genre, gid) in genres_data" :class="is_active(gid)" @click="go_to(gid)">{{ genre.ru }}</a>
+                <div class="ui segment">
+                    <div class="ui icon input">
+                        <input type="text" placeholder="Поиск..." v-model="searchi">
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+                <div class="ui top attached segment" v-if="searchi.length == 0">
+                    <div class="ui grid">
+                        <div class="row">
+                            <div class="five wide column">
+                                <div class="ui secondary vertical pointing menu">
+                                    <a class="item" :class="is_active(0)" @click="go_to(0)">Суммарная статистика</a>
+                                    <a class="item" v-for="(genre, gid) in genres_data" :class="is_active(gid)" @click="go_to(gid)">{{ genre.ru }}</a>
+                                </div>
                             </div>
+                            <kantable :activestat="active_stat" :aeobj="aobj" />
                         </div>
-                        <kantable :activestat="active_stat" :aeobj="aobj" />
+                    </div>
+                </div>
+                <div v-else>
+                    <div v-if="kanstat_data[searchi] != null">
+                        <div class="ui attached center aligned segment">
+                            <span class="hlyph">{{ searchi }}</span>
+                            <table class="ui celled striped table">
+                                <thead>
+                                    <tr>
+                                        <th>Категория</th>
+                                        <th>№</th>
+                                        <th>Употреблений</th>
+                                        <th>Частотность, %</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Общая статистика</th>
+                                        <th>{{ kanstat_data[searchi]["n0"] }}</th>
+                                        <th>{{ kanstat_data[searchi]["0"] }}</th>
+                                        <th>{{ kanstat_data[searchi]["f0"] }}</th>
+                                    </tr>
+                                    <tr v-for="(gdata, id) in genres_data">
+                                        <th>{{ gdata["ru"] }}</th>
+                                        <th>{{ kanstat_data[searchi]["n"+id] }}</th>
+                                        <th>{{ kanstat_data[searchi][id] }}</th>
+                                        <th>{{ kanstat_data[searchi]["f"+id] }}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="ui segment bottom attached warning message" v-else>
+                        <i class="warning icon"></i>
+                        Ничего не найдено.
                     </div>
                 </div>
             </div>
@@ -64,6 +107,7 @@
                 </tbody>
             </table>
             <p v-else>К сожалению, для выбранной категории статистики пока что нет =(</p>
+            <pages :pagestotal="pagescount" :current="defel" @changepage="change_page($event)" v-if="pagescount > 0"></pages>
         </div>
     </template>
     <template id="pagination">

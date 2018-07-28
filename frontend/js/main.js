@@ -9,6 +9,7 @@ var vm = new Vue({
         active_stat: 0,
         aobj: [],
         loader: true,
+        searchi: "",
     },
     methods: {
         loading: function () {

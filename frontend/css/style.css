@@ -23,6 +23,10 @@
     font-size: 1.6em !important;
 }
 
+input {
+    font-family: 'Roboto Condensed', serif !important;
+}
+
 th {
     font-weight: 300;
     padding: 14px;
@@ -76,4 +80,9 @@ table {
 .ui.secondary.vertical.pointing.menu .active.item {
     border-color: #4183c4 !important;
     color: #4183c4 !important;
+}
+
+.hlyph {
+    font-family: 'Source Han Serif JP', serif !important;
+    font-size: 2.6em !important;
 }
